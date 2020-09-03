@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>Belajar Vue.js Bareng Anak Teknik</title>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+
+  <body>
+    <div id="vue-app-one">
+      <h1>Vue app one</h1>
+      <greeting-section></greeting-section>
+    </div>
+
+    <div id="vue-app-two">
+      <h1>Vue app two</h1>
+      <greeting-section></greeting-section>
+    </div>
+
+    <script>
+      Vue.component('greeting-section', {
+        template: `
+          <div>
+            <p>Hi. I'm a {{ name }}</p>
+            <button @click="changeName">Change name</button>
+          </div>
+        `,
+        data: () => ({
+          name: 'Budi',
+        }),
+        methods: {
+          changeName() {
+            this.name = 'Rizal';
+          },
+        },
+      });
+
+      new Vue({
+        el: '#vue-app-one',
+      });
+
+      new Vue({
+        el: '#vue-app-two',
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>Belajar Vue.js Bareng Anak Teknik</title>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+
+  <body>
+    <div id="vue-app">
+      <p>Saya makan apa ya?</p>
+      <select v-model="food">
+        <option value="sate">Sate</option>
+        <option value="nasi goreng">Nasi Goreng</option>
+        <option value="bubur ayam">Bubur Ayam</option>
+      </select>
+      <p v-show="food === 'sate'">Saya makan sate</p>
+      <p v-show="food === 'nasi goreng'">Saya makan nasi goreng</p>
+      <p v-show="food === 'bubur ayam'">Saya makan bubur ayam</p>
+      <p v-show="food === ''">Saya lapar</p>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#vue-app',
+        data: () => ({
+          food: '',
+        }),
+      });
+    </script>
+  </body>
+</html>

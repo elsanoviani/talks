@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>Belajar Vue.js Bareng Anak Teknik</title>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+
+  <body>
+    <div id="vue-app-one">
+      <h1>{{ name }}</h1>
+      <p>{{ greeting }}</p>
+      <button @click="changeName">Ganti nama</button>
+    </div>
+
+    <div id="vue-app-two">
+      <h1>{{ name }}</h1>
+      <p>{{ greeting }}</p>
+      <button @click="changeNameOne">Ganti nama pertama</button>
+    </div>
+
+    <script>
+      const instanceOne = new Vue({
+        el: '#vue-app-one',
+        data: () => ({
+          name: 'Budi',
+        }),
+        computed: {
+          greeting() {
+            return `Hai ${this.name}`;
+          },
+        },
+        methods: {
+          changeName() {
+            this.name = 'Rizal';
+          },
+        },
+      });
+
+      const instanceTwo = new Vue({
+        el: '#vue-app-two',
+        data: () => ({
+          name: 'Andi',
+        }),
+        computed: {
+          greeting() {
+            return `Halo ${this.name}`;
+          },
+        },
+        methods: {
+          changeNameOne() {
+            instanceOne.name = 'Jaka';
+          },
+        },
+      });
+
+      instanceTwo.name = 'Tono';
+    </script>
+  </body>
+</html>

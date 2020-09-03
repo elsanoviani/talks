@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>Belajar Vue.js Bareng Anak Teknik</title>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+
+  <body>
+    <div id="vue-app">
+      <h1>Vue app</h1>
+      <h2>Ini nama dari child component: {{ nameFromChild }}</h2>
+      <greeting-with-button button-color="yellow" text-color="blue" @passnametoparrent="assignNameFromChild"></greeting-with-button>
+    </div>
+
+    <script>
+      Vue.component('greeting-with-button', {
+        template: `
+          <div>
+            <p :style="textStyle">Hi. I'm a {{ name }}</p>
+            <button :style="buttonStyle" @click="changeName">Change name</button>
+            <button @click="$emit('passnametoparrent', name)">Simpan data ke parent</button>
+          </div>
+        `,
+        props: ['buttonColor', 'textColor'],
+        data: () => ({
+          name: 'Budi',
+        }),
+        computed: {
+          textStyle() {
+            return `color: ${this.textColor}`;
+          },
+          buttonStyle() {
+            return `background-color: ${this.buttonColor}`;
+          },
+        },
+        methods: {
+          changeName() {
+            this.name = 'Rizal';
+          },
+        },
+      });
+
+      new Vue({
+        el: '#vue-app',
+        data: () => ({
+          nameFromChild: '',
+        }),
+        methods: {
+          assignNameFromChild(name) {
+            this.nameFromChild = name;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

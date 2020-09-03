@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>Belajar Vue.js Bareng Anak Teknik</title>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+
+  <body>
+    <div id="vue-app">
+      <p>Penghitung: {{ counter }}</p>
+      <button @click="add">Tambah</button>
+    </div>
+
+    <script>
+      window.vue = new Vue({
+        el: '#vue-app',
+        beforeCreate() {
+          console.log('beforeCreate', this.counter);
+        },
+        created() {
+          console.log('created', this.counter);
+        },
+        beforeMount() {
+          console.log('beforeMount', this.counter);
+        },
+        mounted() {
+          console.log('mounted', this.counter);
+        },
+        beforeUpdate() {
+          console.log('beforeUpdate', this.counter);
+        },
+        updated() {
+          console.log('updated', this.counter);
+        },
+        beforeDestroy() {
+          console.log('beforeDestroy', this.counter);
+        },
+        destroyed() {
+          console.log('destroyed', this.counter);
+        },
+        data: () => ({
+          counter: 1,
+        }),
+        methods: {
+          add() {
+            this.counter++;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

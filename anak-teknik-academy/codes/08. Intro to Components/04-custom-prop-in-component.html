@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>Belajar Vue.js Bareng Anak Teknik</title>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+
+  <body>
+    <div id="vue-app">
+      <h1>Vue app</h1>
+      <greeting-with-button button-color="#eeeeee" text-color="blue"></greeting-with-button>
+    </div>
+
+    <script>
+      Vue.component('greeting-with-button', {
+        template: `
+          <div>
+            <p :style="textStyle">Hi. I'm a {{ name }}</p>
+            <button :style="buttonStyle" @click="changeName">Change name</button>
+          </div>
+        `,
+        props: ['buttonColor', 'textColor'],
+        data: () => ({
+          name: 'Budi',
+        }),
+        computed: {
+          textStyle() {
+            return `color: ${this.textColor}`;
+          },
+          buttonStyle() {
+            return `background-color: ${this.buttonColor}`;
+          },
+        },
+        methods: {
+          changeName() {
+            this.name = 'Rizal';
+          },
+        },
+      });
+
+      new Vue({
+        el: '#vue-app',
+      });
+    </script>
+  </body>
+</html>

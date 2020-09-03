@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Belajar Vue.js Bareng Anak Teknik</title>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+
+  <body>
+    <div id="vue-app">
+      <h1>{{ greeting('morning') }}</h1>
+      <p>{{ name }}</p>
+      <p>{{ job }}</p>
+      <p>Umur: {{ age }}</p>
+      <br />
+      <input type="text" v-model="name" />
+      <select v-model="job">
+        <option value="Frontend Engineer">Frontend Engineer</option>
+        <option value="Backend Engineer">Backend Engineer</option>
+        <option value="Fullstack Engineer">Fullstack Engineer</option>
+      </select>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#vue-app',
+        data: () => ({
+          name: 'Rizal Asrul Pambudi',
+          job: 'Frontend Engineer',
+          age: 27,
+        }),
+        methods: {
+          greeting(day) {
+            return `Good ${day}, ${this.name}!`;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

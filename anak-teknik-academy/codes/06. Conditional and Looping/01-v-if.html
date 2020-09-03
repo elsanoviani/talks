@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Belajar Vue.js Bareng Anak Teknik</title>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+
+  <body>
+    <div id="vue-app">
+      <button @click="sleep">Saya tidur</button>
+      <button @click="wakeUp">Saya bangun</button>
+      <p v-if="isSleep">Saya lagi tidur</p>
+      <p v-else>Saya sudah bangun</p>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#vue-app',
+        data: () => ({
+          isSleep: true,
+        }),
+        methods: {
+          sleep() {
+            this.isSleep = true;
+          },
+          wakeUp() {
+            this.isSleep = false;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>Belajar Vue.js Bareng Anak Teknik</title>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+
+  <body>
+    <div id="vue-app">
+      <h1>{{ greeting('morning') }}</h1>
+      <p>{{ name }}</p>
+      <p>{{ job }}</p>
+      <p>Umur: {{ age }}</p>
+      <button v-on:click="add(1)">Tambah</button>
+      <button v-on:click="subtract(1)">Kurang</button>
+      <button v-on:dblclick="add(10)">Tambah 10 tahun</button>
+      <button v-on:dblclick="subtract(10)">Kurang 10 tahun</button>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#vue-app',
+        data: () => ({
+          name: 'Rizal Asrul Pambudi',
+          job: 'Frontend Engineer',
+          age: 27,
+        }),
+        methods: {
+          greeting(day) {
+            return `Good ${day}, ${this.name}!`;
+          },
+          add(increment) {
+            this.age += increment;
+          },
+          subtract(decrement) {
+            this.age -= decrement;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
