@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Belajar Vue.js Bareng Anak Teknik</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <style type="text/css">
+      .navbar-active {
+        background-color: #fafafa;
+        color: #3273dc;
+      }
+    </style>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="stats.js"></script>
+    <script src="news.js"></script>
+  </head>
+  <body>
+    <div id="vue-app">
+      <div class="container">
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="https://bulma.io">
+              <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+            </a>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+          <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+              <a :class="{'navbar-active': isHomepage}" class="navbar-item" @click="goTo('home')">
+                Beranda
+              </a>
+              <a :class="{'navbar-active': isNewspage}" class="navbar-item" @click="goTo('news')">
+                Berita
+              </a>
+            </div>
+
+          </div>
+        </nav>
+      </div>
+
+      <section class="hero is-info">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">
+              Kawal informasi seputar COVID-19 secara tepat dan akurat
+            </h1>
+            <h2 class="subtitle">
+              Situs ini merupakan sumber informasi inisiatif sukarela warganet Indonesia pro-data, terdiri dari praktisi kesehatan, akademisi & profesional.
+            </h2>
+          </div>
+        </div>
+      </section>
+
+      <template v-if="isHomepage">
+        <div style="padding-top: 25px; padding-bottom: 25px;" class="container">
+          <h1 class="title is-2">Jumlah Kasus di Indonesia Saat Ini</h1>
+        </div>
+        <nav style="padding: 15px;" class="level">
+          <div class="level-item has-text-centered">
+            <numbers-block color="#FFDD57" label="Terkonfirmasi" :number="stats.numbers.infected" />
+          </div>
+          <div class="level-item has-text-centered">
+            <numbers-block color="#f5a623" label="Dalam Perawatan" :number="confirmedNumber" />
+          </div>
+        </nav>
+        <nav style="padding: 15px;" class="level">
+          <div class="level-item has-text-centered">
+            <numbers-block color="#48c774" label="Sembuh" :number="stats.numbers.recovered" />
+          </div>
+          <div class="level-item has-text-centered">
+            <numbers-block color="#FF3860" label="Meninggal" :number="stats.numbers.fatal" />
+          </div>
+        </nav>
+        <div class="container">
+          <p class="subtitle is-5">Pembaruan Terakhir</p>
+          <h5 class="title is-5">{{ latestDate }}</h5>
+        </div>
+        <div style="padding-top: 25px; padding-bottom: 25px;" class="container">
+          <h1 class="title is-4">Berita Terkait Covid-19</h1>
+        </div>
+        <div class="container">
+          <table style="width: 100%;" class="table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Provinsi</th>
+                <th>Terkonfirmasi</th>
+                <th>Dalam Perawatan</th>
+                <th>Sembuh</th>
+                <th>Meninggal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(region, i) in regionsStats">
+                <td>{{ i + 1 }}</td>
+                <td>{{ region.name }}</td>
+                <td>{{ region.numbers.infected }}</td>
+                <td>{{ calculateConfirmedNumber(region.numbers) }}</td>
+                <td>{{ region.numbers.recovered }}</td>
+                <td>{{ region.numbers.fatal }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+
+      <template v-else-if="page === 'news'">
+        <div style="padding-top: 25px; padding-bottom: 25px;" class="container">
+          <h1 class="title is-2">Berita Terkait Covid-19</h1>
+        </div>
+        <div class="container">
+          <table style="width: 100%;" class="table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Judul Berita</th>
+                <th>Waktu</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(aNews, i) in news">
+                <td>{{ i + 1 }}</td>
+                <td>{{ aNews.title }}</td>
+                <td>{{ formattedDate(aNews.timestamp) }}</td>
+                <td><a :href="aNews.url" target="_blank">Here</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+    </div>
+  </body>
+
+  <script>
+    const MONTHS = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    Vue.component('numbers-block', {
+      template: `
+         <div>
+            <p class="heading">{{ label }}</p>
+            <p :style="colorStyle" class="title is-1">{{ number }}</p>
+          </div>
+      `,
+      props: ['label', 'color', 'number'],
+      computed: {
+        colorStyle() {
+          return `color: ${this.color}`;
+        },
+      },
+    });
+
+    new Vue({
+      el: '#vue-app',
+      mounted() {
+      },
+      data: () => ({
+        stats: STATS,
+        news: NEWS,
+        page: 'home',
+      }),
+      computed: {
+        isHomepage() {
+          return this.page === 'home';
+        },
+        isNewspage() {
+          return this.page === 'news';
+        },
+        confirmedNumber() {
+          return this.calculateConfirmedNumber(this.stats.numbers);
+        },
+        latestDate() {
+          return this.formattedDate(this.stats.timestamp);
+        },
+        regionsStats() {
+          return this.stats.regions;
+        },
+      },
+      methods: {
+        goTo(page) {
+          this.page = page;
+        },
+        calculateConfirmedNumber(numbers) {
+          const { infected, recovered, fatal } = numbers;
+          return infected - (recovered + fatal);
+        },
+        formattedDate(timestamp) {
+          const formattedDate = new Date(timestamp);
+          const date = formattedDate.getDate();
+          const year = formattedDate.getFullYear();
+          const month = MONTHS[formattedDate.getMonth()];
+
+          return `${date} ${month} ${year}`;
+        }
+      },
+    });
+  </script>
+</html>

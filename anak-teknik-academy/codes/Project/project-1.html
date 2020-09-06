@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <title>Belajar Vue.js Bareng Anak Teknik - Project 1</title>
+    <style type="text/css">
+      .input-text {
+        width: 300px;
+        padding: 8px 10px;
+        border: 1px solid #263238;
+      }
+      .button-remove {
+        padding: 8px;
+      }
+      .button-submit {
+        padding: 8px;
+        margin-top: 5px;
+      }
+      .title-activity {
+        margin-bottom: 0px;
+      }
+      .subtitle-activity {
+        color: #4c4c4c;
+        font-size: 14px;
+        margin-bottom: 2px;
+        margin-top: 0px;
+      }
+      .link-delete {
+        color: red;
+        font-size: 12px;
+      }
+    </style>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+
+  <body>
+    <div id="vue-app">
+      <h1>Aplikasi Pencatat Aktifitas</h1>
+
+      <p>Nama Aktifitas</p>
+      <input v-model="activity.name" class="input-text" type="text" />
+      <button class="button-remove" @click="clearName">x</button>
+      <br />
+
+      <p>Catatan</p>
+      <input v-model="activity.note" class="input-text" type="text" />
+      <button class="button-remove" @click="clearNote">x</button>
+      <br />
+
+      <button class="button-submit" @click="add">Tambah</button>
+      <br />
+
+      <p v-if="activities.length === 0">Silakan memasukkan aktifitas yang ingin Anda catat</p>
+      <ul v-else style="padding-inline-start: 20px;">
+        <activity-list v-for="data in activities" :activity="data" @sendactivityid="remove"></activity-list>
+      </ul>
+    </div>
+
+    <script>
+      Vue.component('activity-list', {
+        template: `
+        <li>
+          <p class="title-activity">{{ activity.name }}</p>
+          <p class="subtitle-activity">Catatan: {{ activity.note || '-' }}</p>
+          <a class="link-delete" @click="sendActivityId(activity.id)">Hapus</a>
+        </li>`,
+        props: ['activity'],
+        methods: {
+          sendActivityId(activityId) {
+            this.$emit('sendactivityid', activityId);
+          },
+        },
+      });
+
+      new Vue({
+        el: '#vue-app',
+        data: () => ({
+          activity: {
+            id: 0,
+            name: '',
+            note: '',
+          },
+          activities: [],
+        }),
+        methods: {
+          clearName() {
+            this.activity.name = '';
+          },
+          clearNote() {
+            this.activity.note = '';
+          },
+          add() {
+            if (this.activity.name) {
+              this.activity.id++;
+              this.activities.push({ ...this.activity });
+              this.activity.name = '';
+              this.activity.note = '';
+            } else {
+              alert('Silakan mengisi nama terlebih dahulu');
+            }
+          },
+          remove(id) {
+            const index = this.activities.findIndex((activity) => activity.id === id);
+
+            this.activities.splice(index, 1);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
